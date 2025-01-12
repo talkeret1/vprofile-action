@@ -57,7 +57,7 @@ jobs:
             #     SONAR_HOST_URL: ${{ secrets.SONAR_URL }}   # Optional
             
     Build_And_Publish:
-      needs: Testing-Code
+      needs: Testing-Code   # Start after "Testing-Code" Job is Finised.
       runs-on: ubuntu-latest
       steps:
           - name: Code Checkout
@@ -75,3 +75,38 @@ jobs:
                 daemon_off: false
                 dockerfile: ./Dockerfile
                 context: ./
+                
+    DeployToEKS:
+      needs: Build_And_Publish   # Start after "Build_And_Publish" Job is Finised.
+      runs-on: ubuntu-latest
+      steps:
+        - name: Code Checkout
+          uses: actions/checkout@v4
+        
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+            aws-region: ${{ env.AWS.REGION }}
+
+        - name: Get Kube Config File
+          run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ enc.EKS_CLUSTER }}  # Generating A Kube Config File
+          
+        - name: Print Kube Config File
+          run: cat ~/.kube/config
+
+        - name: Login to ECR
+          run: kubectl create secret docker-registry regcred --docker-server=${{ secrets.REGISTRY }} --docker-username=AWS --docker-password=$(aws ecr get-login-password)
+        
+        - name: Deploy Helm
+          uses: bitovi/github-actions-depoly-eks-helm@v1.2.8
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.REGION }}
+            cluster-name: ${{ env.EKS_CLUSTER }}
+            #config-files: .github/values/dev.yaml
+            chart-path: helm/vprofilecharts
+            namespace: default
+            values: appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }},app # Fetch the ECR Image 
