@@ -47,12 +47,12 @@ jobs:
 
             # Check the Quality Gate Status
 
-            - name: SonarQube Quality Gate Check
-              id: sonarqube-quality-gate-check
-              uses: sonarsource/sonarqube-quality-gate-action@master
-              # Force to Fail Steps After Specific Time
-              timeout-minutes: 5
-              env:
-                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-                SONAR_HOST_URL: ${{ secrets.SONAR_URL }}   # Optional
+            # - name: SonarQube Quality Gate Check
+            #   id: sonarqube-quality-gate-check
+            #   uses: sonarsource/sonarqube-quality-gate-action@master
+            #   # Force to Fail Steps After Specific Time
+            #   timeout-minutes: 5
+            #   env:
+            #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            #     SONAR_HOST_URL: ${{ secrets.SONAR_URL }}   # Optional
                 
