@@ -91,7 +91,7 @@ jobs:
             aws-region: ${{ env.AWS.REGION }}
 
         - name: Get Kube Config File
-          run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ enc.EKS_CLUSTER }}  # Generating A Kube Config File
+          run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER }}  # Generating A Kube Config File
           
         - name: Print Kube Config File
           run: cat ~/.kube/config
