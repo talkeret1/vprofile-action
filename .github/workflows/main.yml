@@ -109,5 +109,5 @@ jobs:
             #config-files: .github/values/dev.yaml
             chart-path: helm/vprofilecharts
             namespace: default
-            values: appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }},apptag=${{ github.run_number }}  # Fetch the ECR Image
+            values: appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }}, apptag=${{ github.run_number }}  # Fetch the ECR Image
             name: vprofile-stack    
