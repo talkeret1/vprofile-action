@@ -108,6 +108,6 @@ jobs:
             cluster-name: ${{ env.EKS_CLUSTER }}
             #config-files: .github/values/dev.yaml
             chart-path: helm/vprofilecharts
-            namespace: default
+            #namespace: default
             values: appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }}, apptag=${{ github.run_number }}  # Fetch the ECR Image
             name: vprofile-stack
