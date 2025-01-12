@@ -1,5 +1,5 @@
 name: vprofile actions
-on: workflow_dispatch
+on: workflow_dispatch # Starting the Workflow Manually from Github Actions.
 env:
     AWS_REGION: us-east-1
     ECR_REPOSITORY: vprofileapp
@@ -61,7 +61,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
           - name: Code Checkout
-            uses: actions/chckeout@v4
+            uses: actions/checkeout@v4
 
           - name: Build & Upload Image to ECR
             uses: appleboy/docker-ecr-action@master
